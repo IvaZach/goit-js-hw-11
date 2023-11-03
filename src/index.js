@@ -91,11 +91,12 @@
 /* Створи фронтенд частину застосунку пошуку і перегляду зображень за ключовим словом*/
 
 import './index.css';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import Notiflix from 'notiflix';
+import { getCard } from './js/fetch';
+import { createMarkup } from './js/createmarkup';
+import { funcLightbox } from './js/simplelightbox';
 
-const KEY = '40433547-a16bb9ed48620ac03347923c1';
-const URL = 'https://pixabay.com/api/';
+import { funcError, funcSorryError} from './js/notifix';
 
 const search = document.querySelector('.js-search-form');
 const gallery = document.querySelector('.gallery');
@@ -104,104 +105,29 @@ search.addEventListener('submit', onSearch);
 function onSearch(evt) {
   evt.preventDefault();
 
-  const searchCard = evt.currentTarget[0].value;
+  let searchCard = evt.currentTarget[0].value;
   console.log(searchCard);
 
   getCard(searchCard)
     .then(data => {
       gallery.innerHTML = createMarkup(data.hits);
+     
+      const totalHitsFound = data.totalHits;
+      Notiflix.Notify.info(`Hooray! We found ${totalHitsFound} images.`);
       
-      const lightbox = new SimpleLightbox('.link', {
-        captionsData: 'alt',
-        captionDelay: 200,
-        captionPosition: 'bottom',
-      });
 
-      console.log(lightbox);
-      lightbox.on('show.simplelightbox');
-      lightbox.on('error.simplelightbox', function (e) {
-        console.log(e);
-      });
+      funcLightbox();
+      search.reset();
+    
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      funcError();
+      console.log(err);
+    });
 }
 
-async function getCard(searchCard) {
-  const params = new URLSearchParams({
-    q: `${searchCard}`,
-    lang: 'en',
-    key: `${KEY}`,
-    orientation: 'horizontal',
-    page: 1,
-    per_page: 40,
-    image_type: 'photo',
-    safesearch: true,
-  });
+console.log(console);
 
-  let requestOptions = {
-    method: 'GET',
-  };
-
-  return await fetch(`${URL}?${params}`, requestOptions).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.statusText);
-    }
-    return resp.json();
-  });
-}
-
-function createMarkup(arr) {
-  return arr
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) =>
-        `<div class="photo-card">
-        <a class="link" href="${largeImageURL}">          
-        <div class="thumb"> 
-    <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
-    </div>
-    <div class="info">
-      <p class="info-item">
-        <b>Likes</b>
-        <b>${likes}</b>
-      </p>
-      <p class="info-item">
-        <b>Views</b>
-        <b>${views}</b>
-      </p>
-      <p class="info-item">
-        <b>Comments</b>
-        <b>${comments}</b>
-      </p>
-      <p class="info-item">
-        <b>Downloads</b>
-        <b>${downloads}</b>
-      </p>
-    </div>
-    </a>
-  </div>`
-    )
-    .join('');
-}
-
-// const lightbox = new SimpleLightbox('.link', {
-//   captionsData: 'alt',
-//   captionDelay: 250,
-//   captionPosition: 'bottom',
-// });
-
-// console.log(lightbox);
-// lightbox.on('show.simplelightbox');
-// lightbox.on('error.simplelightbox', function (e) {
-// 	console.log(e); // some usefull information
-// });
 
 // const searchForm = document.querySelector('.js-search');
 // const addCountry = document.querySelector('.js-add');
