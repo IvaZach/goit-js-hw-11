@@ -12,38 +12,31 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
 
-  <header class="header">
-  <form class="search-form js-search-form" id="search-form" action="submit" >
-      <label for="search">Look for pictures</label>
-      <input
-        class="input"
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-        id="search"
-        autofocus
-        required
-      />
-      <button type="submit">Go</button>
-    </form>
-
-  </header>
   <body>
-    <!-- <select class="breed-select is-hidden"> </select>
-    <p class="loader">Loading data, please wait...</p>
-    <p class="error is-hidden">
-      Oops! Something went wrong! Try reloading the page!
-    </p>
-    <div class="cat-info"></div>  role="search"-->
+    <header class="header">
+      <form class="search-form js-search-form" id="search-form" action="submit">
+        <label for="search">Look for pictures</label>
+        <input
+          class="input"
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+          id="search"
+          autofocus
+          required
+        />
+        <button class="search-btn" type="submit">Go</button>
+      </form>
+    </header>
 
-  
+    <main>
+      <div class="gallery"></div>
+    </main>
 
-    <div class="gallery">
-        
-      
-    </div>
-
+    <footer>
+      <button type="button" class="load-more">Load more</button>
+    </footer>
     <script src="index.js" type="module"></script>
   </body>
 </html>

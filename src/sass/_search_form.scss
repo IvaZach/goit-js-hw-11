@@ -39,7 +39,7 @@ form {
   border-radius: var(--rad);
 }
 input,
-button {
+.search-btn {
   height: var(--height);
   font-family: var(--font-fam);
   border: 0;
@@ -58,7 +58,7 @@ input[type="search"] {
   z-index: 1;
   position: relative;
 }
-button {
+.search-btn {
   display: none; 
   position: absolute;
   top: 0;
@@ -71,7 +71,7 @@ button {
 input:not(:placeholder-shown) {
   border-radius: var(--rad) 0 0 var(--rad);
   width: calc(100% - var(--btn-width));
-  + button {
+  + .search-btn {
     display: block;
   }
 }
