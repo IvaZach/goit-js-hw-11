@@ -9,10 +9,7 @@
 
   padding: 10px;
 }
-footer{
-  position: fixed;
-  bottom: 20;
-}
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +41,7 @@ footer{
 }
 .info {
   height: 60px;
-  background-color: #edfbc6;
+  background-color: #26a69a;
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
@@ -57,7 +54,7 @@ footer{
 }
 .info-item {
   font-size: 10px;
-  color: #757575;
+  color: #fff;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -71,17 +68,24 @@ img {
   object-fit: cover;
 }
 
+footer{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
 .load-more{
   text-decoration: none;
   color: #fff;
   background-color: #26a69a;
   text-align: center;
   letter-spacing: .5px;
-  
+  padding: 10px;
   cursor: pointer;
  
     border-radius: 2px;
-    display: inline-block;
+    display: flex;
     height: 36px;
     
     

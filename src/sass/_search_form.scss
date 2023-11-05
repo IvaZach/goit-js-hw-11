@@ -4,7 +4,7 @@
   --dur: 0.3s;
   --color-dark: #2f2f2f;
   --color-light: #fff;
-  --color-brand: #57bd84;
+  --color-brand: #26a69a;
   --font-fam: "Lato", sans-serif;
   --height: 5rem;
   --btn-width: 6rem;
@@ -13,10 +13,8 @@
 
 // Setup
 body {
-  background: #f2fcd7;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  background: #fff;
+ 
   min-height: 100vh;
   margin-top: 5px;
 }

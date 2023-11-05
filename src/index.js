@@ -2,11 +2,12 @@
 
 import './index.css';
 import Notiflix from 'notiflix';
-import { getCard, page, perPage } from './js/fetch';
+import { getCard, perPage } from './js/fetch';
 import { createMarkup } from './js/createmarkup';
-import { funcLightbox } from './js/simplelightbox';
+import { funcSimpleLightbox } from './js/simplelightbox';
 
 import { funcError, funcSorryError } from './js/notifix';
+
 
 const search = document.querySelector('.js-search-form');
 const gallery = document.querySelector('.gallery');
@@ -14,43 +15,60 @@ export const btnMore = document.querySelector('.load-more');
 search.addEventListener('submit', onSearch);
 btnMore.classList.add('is-hidden');
 
-function onSearch(evt) {
+let searchCard = '';
+export let page = 1;
+
+async function onSearch(evt) {
   evt.preventDefault();
 
-  let searchCard = evt.currentTarget[0].value;
+  gallery.innerHTML = '';
+  page = 1;
+  searchCard = evt.currentTarget[0].value;
 
-  getCard(searchCard)
+  await getCard(searchCard, page)
     .then(data => {
       gallery.innerHTML = createMarkup(data.hits);
-      console.log('1 markup');
-      let totalHitsFound = data.totalHits;
-      if (totalHitsFound !== 0) {
-        Notiflix.Notify.info(`Hooray! We found ${totalHitsFound} images.`);
-      }
-      funcLightbox();
-
       btnMore.classList.remove('is-hidden');
-      btnMore.addEventListener('click', onBtnMore);
-      function onBtnMore(evt) {
-        console.log('2 more', evt);
-        getCard(searchCard).then(data => {
-          gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
-          if ((page - 1) * perPage >= totalHitsFound) {
-            btnMore.classList.add('is-hidden');
-            console.log('6', page);
-            Notiflix.Notify.warning(
-              "We're sorry, but you've reached the end of search results."
-            );
-          }
-        });
+      console.log(page, searchCard);
+      let totalHitsFound = data.totalHits;
+      if (totalHitsFound === 0 && totalHitsFound === data.total) {
+        btnMore.classList.add('is-hidden');
+        search.reset();
       }
 
-      search.reset();
+      if (totalHitsFound !== 0) {
+        Notiflix.Notify.success(`Hooray! We found ${totalHitsFound} images.`);
+        btnMore.classList.remove('is-hidden');
+        search.reset();
+      }
+      funcSimpleLightbox();
+
+      if (totalHitsFound < data.total) {
+        btnMore.classList.remove('is-hidden');
+      }
     })
     .catch(err => {
-      btnMore.classList.add('is-hidden');
       funcError();
       console.log(err);
     });
+}
+btnMore.addEventListener('click', onBtnMore);
+
+function onBtnMore(evn) {
+  console.log(evn);
+  page += 1;
+  getCard(searchCard, page).then(data => {
+    gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+    let totalHitsFound = data.totalHits;
+    funcSimpleLightbox();
+    console.log(page, searchCard);
+    if (page * perPage >= totalHitsFound) {
+      btnMore.classList.add('is-hidden');
+
+      Notiflix.Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+  });
 }
 
