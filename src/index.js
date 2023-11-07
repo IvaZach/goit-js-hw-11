@@ -41,7 +41,7 @@ async function onSearch(evt) {
         btnMore.classList.remove('is-hidden');
         search.reset();
       }
-      funScrollBy();
+      
       funcSimpleLightbox();
 
       if (totalHitsFound < data.total) {

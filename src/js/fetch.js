@@ -5,7 +5,7 @@ import { page } from '..';
 const KEY = '40433547-a16bb9ed48620ac03347923c1';
 const URL = 'https://pixabay.com/api/';
 
-export let perPage = 140;
+export let perPage = 40;
 
 export async function getCard(searchCard, page) {
   const params = new URLSearchParams({
