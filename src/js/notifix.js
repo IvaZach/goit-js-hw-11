@@ -14,4 +14,3 @@ export function funcSorryError() {
   btnMore.classList.add('is-hidden');
   Notiflix.Notify.failure(sorryContent);
 }
-

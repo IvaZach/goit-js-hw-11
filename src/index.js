@@ -2,12 +2,12 @@
 
 import './index.css';
 import Notiflix from 'notiflix';
+
 import { getCard, perPage } from './js/fetch';
 import { createMarkup } from './js/createmarkup';
 import { funcSimpleLightbox } from './js/simplelightbox';
 
-import { funcError, funcSorryError } from './js/notifix';
-
+import { funcError } from './js/notifix';
 
 const search = document.querySelector('.js-search-form');
 const gallery = document.querySelector('.gallery');
@@ -41,17 +41,20 @@ async function onSearch(evt) {
         btnMore.classList.remove('is-hidden');
         search.reset();
       }
+      funScrollBy();
       funcSimpleLightbox();
 
       if (totalHitsFound < data.total) {
         btnMore.classList.remove('is-hidden');
       }
+      console.dir(scroll);
     })
     .catch(err => {
       funcError();
       console.log(err);
     });
 }
+
 btnMore.addEventListener('click', onBtnMore);
 
 function onBtnMore(evn) {
@@ -60,8 +63,11 @@ function onBtnMore(evn) {
   getCard(searchCard, page).then(data => {
     gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
     let totalHitsFound = data.totalHits;
+
+    funScrollBy();
     funcSimpleLightbox();
     console.log(page, searchCard);
+
     if (page * perPage >= totalHitsFound) {
       btnMore.classList.add('is-hidden');
 
@@ -72,3 +78,13 @@ function onBtnMore(evn) {
   });
 }
 
+function funScrollBy() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+  console.log('scrollby');
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}

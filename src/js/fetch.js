@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { funcError, funcSorryError } from './notifix';
+import { funcSorryError } from './notifix';
 import { page } from '..';
 
 const KEY = '40433547-a16bb9ed48620ac03347923c1';
 const URL = 'https://pixabay.com/api/';
 
-
-export let perPage = 40;
+export let perPage = 140;
 
 export async function getCard(searchCard, page) {
   const params = new URLSearchParams({
@@ -18,7 +17,7 @@ export async function getCard(searchCard, page) {
     per_page: `${perPage}`,
     image_type: 'photo',
     safesearch: true,
-    order: 'latest',
+    // order: 'latest',
   });
 
   try {
