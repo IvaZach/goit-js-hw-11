@@ -29,6 +29,7 @@ async function onSearch(evt) {
   gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
 
   console.log(page, searchCard);
+  
   let totalHitsFound = data.totalHits;
   if (totalHitsFound === 0 && totalHitsFound === data.total) {
     btnMore.classList.add('is-hidden');
@@ -46,7 +47,7 @@ async function onSearch(evt) {
   if (totalHitsFound < data.total) {
     btnMore.classList.remove('is-hidden');
   }
-  console.dir(scroll);
+ 
 }
 
 btnMore.addEventListener('click', onBtnMore);
@@ -75,7 +76,7 @@ function funScrollBy() {
   const { height: cardHeight } = document
     .querySelector('.gallery')
     .firstElementChild.getBoundingClientRect();
-  console.log('scrollby');
+  
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
