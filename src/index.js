@@ -24,58 +24,51 @@ async function onSearch(evt) {
   gallery.innerHTML = '';
   page = 1;
   searchCard = evt.currentTarget[0].value;
+  btnMore.classList.remove('is-hidden');
+  const data = await getCard(searchCard, page);
+  gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
 
-  await getCard(searchCard, page)
-    .then(data => {
-      gallery.innerHTML = createMarkup(data.hits);
-      btnMore.classList.remove('is-hidden');
-      console.log(page, searchCard);
-      let totalHitsFound = data.totalHits;
-      if (totalHitsFound === 0 && totalHitsFound === data.total) {
-        btnMore.classList.add('is-hidden');
-        search.reset();
-      }
+  console.log(page, searchCard);
+  let totalHitsFound = data.totalHits;
+  if (totalHitsFound === 0 && totalHitsFound === data.total) {
+    btnMore.classList.add('is-hidden');
+    search.reset();
+  }
 
-      if (totalHitsFound !== 0) {
-        Notiflix.Notify.success(`Hooray! We found ${totalHitsFound} images.`);
-        btnMore.classList.remove('is-hidden');
-        search.reset();
-      }
-      
-      funcSimpleLightbox();
+  if (totalHitsFound !== 0) {
+    Notiflix.Notify.success(`Hooray! We found ${totalHitsFound} images.`);
+    btnMore.classList.remove('is-hidden');
+    search.reset();
+  }
 
-      if (totalHitsFound < data.total) {
-        btnMore.classList.remove('is-hidden');
-      }
-      console.dir(scroll);
-    })
-    .catch(err => {
-      funcError();
-      console.log(err);
-    });
+  funcSimpleLightbox();
+
+  if (totalHitsFound < data.total) {
+    btnMore.classList.remove('is-hidden');
+  }
+  console.dir(scroll);
 }
 
 btnMore.addEventListener('click', onBtnMore);
 
-function onBtnMore(evn) {
-  console.log(evn);
+async function onBtnMore(evn) {
   page += 1;
-  getCard(searchCard, page).then(data => {
-    gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
-    let totalHitsFound = data.totalHits;
+  const data = await getCard(searchCard, page);
+  gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+  let totalHitsFound = data.totalHits;
 
-    funScrollBy();
-    funcSimpleLightbox();
-    console.log(page, searchCard);
+  funScrollBy();
+  funcSimpleLightbox();
 
-    if (page * perPage >= totalHitsFound) {
-      btnMore.classList.add('is-hidden');
+  console.log(page, searchCard);
 
-      Notiflix.Notify.warning(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
-  });
+  if (page * perPage >= totalHitsFound) {
+    btnMore.classList.add('is-hidden');
+
+    Notiflix.Notify.warning(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
 }
 
 function funScrollBy() {

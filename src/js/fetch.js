@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { funcSorryError } from './notifix';
+import { funcSorryError, funcError } from './notifix';
 import { page } from '..';
 
 const KEY = '40433547-a16bb9ed48620ac03347923c1';
@@ -30,6 +30,7 @@ export async function getCard(searchCard, page) {
 
     return response.data;
   } catch (error) {
+    funcError();
     console.error(error);
   }
 }
